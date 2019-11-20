@@ -24,6 +24,7 @@ $> php -S 0.0.0.0:80 -t ./public/
 ``` 
 
 Copy the file`config/parameters.php.dist` to `config/pararmeters.php` and edit it. In this file, you can indicate the Database URN, etc...
+To initialize the database, run the script `./src/init.php`.
 
 # Playing
 
@@ -65,6 +66,7 @@ If you play as the bank role, you have more options to send money from the bank 
 
 The `GAME` table contains information of a running game :
 - id : the internal identifier
+- game_id : the public game identifier (xxyyyyyc)
 - bank_start : the initial amount of money in the bank
 - bank_current : the current amount of money in the bank
 - date_begin : the datetime when the game start
@@ -72,7 +74,7 @@ The `GAME` table contains information of a running game :
 
 The `PLAYER` table contains information of player :
 - id : the internal identifier of the player
-- game_id : the identifier of the game he is playing
+- game_id : the identifier of the game he is playing (public game id)
 - name : the name of the player
 - current : the current amount of the player account
 - date_begin : the datetime when the user join the game
@@ -80,7 +82,7 @@ The `PLAYER` table contains information of player :
 The `OPERATION` table contains history of bank operation :
 - id : the internal id of the operation
 - date_op : the datetime of the operation
-- game_id : the id of the game
+- game_id : the id of the game (public game id)
 - from_player_id : the id of the player sending the money (or 0 if it is the bank)
 - to_player_id : the id of the player receiving the money (or 0 if it is the bank)
 - amount : the amount of the operation (always > 0)

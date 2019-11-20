@@ -6,8 +6,7 @@
 if (!file_exists('../config/parameters.php'))
   die('Please create a config/parameters.php file !');
 
-include_once('../config/parameters.php');
-include_once('lib/StringUtils.php');
+include_once('include.php');
 global $CONFIG;
 
 if (StringUtils::startsWith($CONFIG['DB_DSN'], 'sqlite'))
@@ -22,6 +21,7 @@ if (StringUtils::startsWith($CONFIG['DB_DSN'], 'sqlite'))
 }
 
 // Check if database exists
+$dao = new DAO($CONFIG['DB_DSN'], $CONFIG['DB_USER'], $CONFIG['DB_PASS']);
 
 try
 {
@@ -41,10 +41,10 @@ if (@$argv[1] == '--recreate')
 }
 $sql[] = "
 create table 'game' (
-  id integer primary key,
-  game_id char(8),
+  game_id char(8) primary key,
   bank_start unsigned decimal(10,0),
   bank_current unsigned decimal(10,0),
+  bank_init unsigned decimal(10,0),
   date_begin datetime,
   bank_player_id integer
   )

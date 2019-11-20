@@ -1,0 +1,469 @@
+
+
+.panel {
+  background: #EEE;
+  text-align: center;
+  padding: 10px;
+}
+
+.error {
+  background: #FF4040;
+  text-align: center;
+  color: #FFF;
+  padding: 1px;
+}
+
+/** https://cantina.co/building-a-better-button-in-css/ **/@-webkit-keyframes button-busy {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@keyframes button-busy {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+.button {
+  background-color: transparent;
+  border: 0;
+  color: #fefbef;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 1.5rem;
+  transition: background-color 300ms, border-color 300ms, box-shadow 150ms;
+  width: 100%;
+}
+.button:focus {
+  outline: none;
+}
+.button:active {
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+  transition: none;
+}
+.button[aria-busy="true"] {
+  -webkit-animation: button-busy 2s ease-in-out infinite !important;
+          animation: button-busy 2s ease-in-out infinite !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+.button[aria-busy="true"]:focus {
+  box-shadow: none !important;
+}
+.button[aria-busy="true"]:active {
+  -webkit-transform: none !important;
+          transform: none !important;
+}
+.button[disabled] {
+  cursor: not-allowed !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+.background--dark .button {
+  color: #403f3c;
+}
+@media (min-width: 37.5em) {
+  .button {
+    width: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+.button--primary.button--solid:focus, .button--primary.button--hollow:focus {
+  box-shadow: 0 0 0 3px #fefbef, 0 0 0 5px #ff4136;
+}
+.background--dark .button--primary.button--solid:focus, .background--dark .button--primary.button--hollow:focus {
+  box-shadow: 0 0 0 3px #403f3c, 0 0 0 5px #ff4136;
+}
+.button--primary.button--solid {
+  background-color: #ff4136;
+}
+.button--primary.button--solid:hover {
+  background-color: #ff635a;
+}
+.button--primary.button--solid:active {
+  background-color: #ff1f12;
+}
+.button--primary.button--solid[disabled]:hover {
+  background-color: #ff4136 !important;
+}
+.button--primary.button--hollow {
+  color: #ff4136;
+  border: 3px solid #ff4136;
+}
+.button--primary.button--hollow:hover {
+  border-color: #ff635a;
+  color: #ff635a;
+}
+.button--primary.button--hollow:active {
+  border-color: #ff1f12;
+  color: #ff1f12;
+}
+.button--primary.button--hollow[disabled]:hover {
+  color: #ff4136;
+  border: 3px solid #ff4136;
+}
+.button--secondary.button--solid:focus, .button--secondary.button--hollow:focus {
+  box-shadow: 0 0 0 3px #fefbef, 0 0 0 5px #357edd;
+}
+.background--dark .button--secondary.button--solid:focus, .background--dark .button--secondary.button--hollow:focus {
+  box-shadow: 0 0 0 3px #403f3c, 0 0 0 5px #357edd;
+}
+.button--secondary.button--solid {
+  background-color: #357edd;
+}
+.button--secondary.button--solid:hover {
+  background-color: #5492e2;
+}
+.button--secondary.button--solid:active {
+  background-color: #226ccc;
+}
+.button--secondary.button--solid[disabled]:hover {
+  background-color: #357edd !important;
+}
+.background--dark .button--secondary.button--solid {
+  background-color: #1e90ff;
+}
+.background--dark .button--secondary.button--solid:hover {
+  background-color: #42a2ff;
+}
+.background--dark .button--secondary.button--solid:active {
+  background-color: #007ef9;
+}
+.background--dark .button--secondary.button--solid[disabled]:hover {
+  background-color: #357edd !important;
+  opacity: 0.2 !important;
+}
+.button--secondary.button--hollow {
+  color: #357edd;
+  border: 3px solid #357edd;
+}
+.button--secondary.button--hollow:hover {
+  border-color: #5492e2;
+  color: #5492e2;
+}
+.button--secondary.button--hollow:active {
+  border-color: #226ccc;
+  color: #226ccc;
+}
+.button--secondary.button--hollow[disabled]:hover {
+  color: #357edd;
+  border: 3px solid #357edd;
+}
+.background--dark .button--secondary.button--hollow {
+  color: #1e90ff;
+  border: 3px solid #1e90ff;
+}
+.background--dark .button--secondary.button--hollow:hover {
+  border-color: #72a5e7;
+  color: #72a5e7;
+}
+.background--dark .button--secondary.button--hollow:active {
+  border-color: #1d5cad;
+  color: #1d5cad;
+}
+.background--dark .button--secondary.button--hollow[disabled]:hover {
+  color: #1e90ff;
+  border: 3px solid #1e90ff;
+}
+.button--tertiary.button--solid:focus, .button--tertiary.button--hollow:focus {
+  box-shadow: 0 0 0 3px #fefbef, 0 0 0 5px #808080;
+}
+.background--dark .button--tertiary.button--solid:focus, .background--dark .button--tertiary.button--hollow:focus {
+  box-shadow: 0 0 0 3px #403f3c, 0 0 0 5px #808080;
+}
+.button--tertiary.button--solid {
+  background-color: #808080;
+}
+.button--tertiary.button--solid:hover {
+  background-color: #929292;
+}
+.button--tertiary.button--solid:active {
+  background-color: #6e6e6e;
+}
+.button--tertiary.button--solid[disabled]:hover {
+  background-color: #808080 !important;
+}
+.background--dark .button--tertiary.button--solid {
+  background-color: #939393;
+}
+.background--dark .button--tertiary.button--solid:hover {
+  background-color: #a5a5a5;
+}
+.background--dark .button--tertiary.button--solid:active {
+  background-color: #818181;
+}
+.background--dark .button--tertiary.button--solid[disabled]:hover {
+  background-color: #939393 !important;
+}
+.button--tertiary.button--hollow {
+  color: #808080;
+  border: 3px solid #808080;
+}
+.button--tertiary.button--hollow:hover {
+  border-color: #929292;
+  color: #929292;
+}
+.button--tertiary.button--hollow:active {
+  border-color: #6e6e6e;
+  color: #6e6e6e;
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+  transition: none;
+}
+.button--tertiary.button--hollow[disabled]:hover {
+  color: #808080;
+  border: 3px solid #808080;
+}
+.background--dark .button--tertiary.button--hollow {
+  color: #939393;
+  border: 3px solid #939393;
+}
+.background--dark .button--tertiary.button--hollow:hover {
+  border-color: #b6b6b6;
+  color: #b6b6b6;
+}
+.background--dark .button--tertiary.button--hollow:active {
+  border-color: #4a4a4a;
+  color: #4a4a4a;
+}
+.background--dark .button--tertiary.button--hollow[disabled]:hover {
+  color: #939393;
+  border: 3px solid #939393;
+}
+.button--small {
+  min-width: 6rem;
+  border-radius: 0.5rem;
+  font-size: 0.8em;
+  min-height: 2rem;
+}
+.button--small.button--hollow {
+  border-width: 2px;
+}
+.background--dark .button--small.button--hollow {
+  border-width: 2px;
+}
+.button--small.button--icon [class^="icon-"] {
+  height: 0.8rem;
+  margin-right: 0.2rem;
+  position: relative;
+  top: 0.125rem;
+  width: 0.8rem;
+}
+.button--medium {
+  min-width: 8rem;
+  border-radius: 0.75rem;
+  min-height: 2.5rem;
+}
+.button--medium.button--icon [class^="icon-"] {
+  height: 1rem;
+  margin-right: 0.3rem;
+  position: relative;
+  top: 0.125rem;
+  width: 1rem;
+}
+.button--large {
+  min-width: 10rem;
+  border-radius: 0.75rem;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  min-height: 3rem;
+}
+.button--large.button--icon [class^="icon-"] {
+  height: 1.1rem;
+  margin-right: 0.35rem;
+  position: relative;
+  top: 0.1875rem;
+  width: 1.1rem;
+}
+.button--solid[disabled]:active, .button--hollow[disabled]:active {
+  -webkit-transform: none !important;
+          transform: none !important;
+}
+
+@media (min-width: 37.5em) {
+  .action-row {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+.action-row .button:first-of-type {
+  margin-right: 0;
+}
+
+body {
+  color: #403f3c;
+  padding: 3rem;
+  background-color: #fefbef;
+}
+
+.background {
+  transition: background-color 300ms ease;
+}
+.background--light {
+  background-color: #fefbef;
+}
+.background--dark {
+  background-color: #403f3c;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+.background--dark h1,
+.background--dark h2,
+.background--dark h3 {
+  color: #fefbef;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 1em;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 0.9em;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-top: 2.5em;
+  text-transform: uppercase;
+}
+
+hr {
+  border: 1px solid #403f3c;
+  margin-top: 2.5rem;
+}
+.background--dark hr {
+  border: 1px solid #fefbef;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.toggle {
+  background-color: #403f3c;
+  border: 2px solid #fefbef;
+  color: #fefbef;
+  font-size: 0.8em;
+  outline: none;
+  position: fixed;
+  right: 0.625rem;
+  top: 0.625rem;
+  text-align: center;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 2rem;
+  z-index: 100;
+}
+.toggle:hover {
+  background-color: #262523;
+}
+.toggle:focus {
+  box-shadow: 0 0 0 2px #fefbef, 0 0 0 3.75px #403f3c;
+}
+.toggle:active {
+  background-color: black;
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+}
+.background--dark .toggle {
+  color: #403f3c;
+  background-color: #fefbef;
+  border: 2px solid #403f3c;
+}
+.background--dark .toggle:hover {
+  background-color: #dddddd;
+}
+.background--dark .toggle:focus {
+  box-shadow: 0 0 0 2px #403f3c, 0 0 0 3.75px #fefbef;
+}
+.background--dark .toggle:active {
+  background-color: #aaaaaa;
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+}
+
+a[class*="button"]:before,
+div[class*="button"]:before,
+p[class*="button"]:before,
+span[class*="button"]:before,
+button[href]:before,
+input[type="button"][href]:before {
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  color: white;
+  content: "Please use the correct button syntax!";
+  background-color: fuchsia;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  left: 0;
+  -webkit-transform: rotate(-4deg);
+          transform: rotate(-4deg);
+}
+
+pre {
+  background-color: #e6e6e6;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+code {
+  color: #403f3c;
+  font-family: "Consolas", "monaco", "Lucida Console", monospace;
+  font-size: 1em;
+  letter-spacing: 0.03125em;
+}
+
+.code-example:after {
+  color: #8e8c87;
+  content: "HTML";
+  display: block;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.8em;
+  position: relative;
+  bottom: 0;
+  right: 0;
+  text-align: right;
+}
+.code-example--valid {
+  background: #e6e6e6 url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/11907/bkg-valid.svg") no-repeat bottom 1rem right 3.5rem;
+  background-size: 1.1rem;
+}
+.code-example--invalid {
+  background: #e6e6e6 url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/11907/bkg-invalid.svg") no-repeat bottom 1rem right 3.5rem;
+  background-size: 1.1rem;
+}
+.code-example__markup-error {
+  background-color: #ff6347;
+  color: #ffffff;
+  outline: 4px solid #ff6347;
+}

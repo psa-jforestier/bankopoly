@@ -5,7 +5,7 @@
 // Database MySQL
 $CONFIG['DB_DSN'] = 'mysql:dbname=testdb;host=127.0.0.1:3306';
 // Database SQLITE
-$CONFIG['DB_DSN'] = 'sqlite:'.dirname(__FILE__).'/var/bankopoloy.sqlite';
+$CONFIG['DB_DSN'] = 'sqlite3:'.dirname(__FILE__).'/var/bankopoloy.sqlite';
 
 $CONFIG['DB_USER'] = 'username';
 $CONFIG['DB_PASS'] = 'password';
