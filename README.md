@@ -29,5 +29,5 @@ Copy the file`config/parameters.php.dist` to `config/pararmeters.php` and edit i
 
 The welcome screen allow you to create a new gamae, or join an existing game. Click on *create a new game* to start the creation.
 
-On the *Create a new game* screen, enter the maximum amount of the cash in the bank. You can start with 1 000 000 of -/\/\- (-/\/\- is the currency symbol of money in Monopoly)
+On the *Create a new game* screen, enter the maximum amount of the cash in the bank. You can start with 1 000 000 of -M- (-M- is the currency symbol of money in Monopoly)
 
