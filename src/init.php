@@ -64,6 +64,7 @@ $sql[] = "
 create table 'operation' (
   id integer primary key,
   date_op datetime,
+  date_op_str varchar,
   game_id char(8),
   from_player_id integer,
   to_player_id integer,

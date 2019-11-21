@@ -76,4 +76,101 @@ class DAOGame extends DAO
     ]);
     return $r;
   }
+  
+  /**
+   ** The bank give money to a player.
+   ** Update the game gameid by debiting $amount of money, and give the money to $playerid
+   **/
+  public function giveBankMoneyToPlayer($game_id, $player_id, $amount)
+  {
+    // Get the game
+    $g = $this->loadGameFromDB($game_id);
+    if (count($g) === 0)
+      return -1;
+    $game = $g[0];
+    $stmt = $this->pdo->prepare("update game set bank_current = bank_current - :amount where game_id = :game_id");
+    $r = $stmt->execute([
+      ':amount'=>$amount,
+      ':game_id'=>$game_id
+    ]);
+    $stmt = $this->pdo->prepare("update player set current = current + :amount where id = :player_id");
+    $r = $stmt->execute([
+      ':amount'=>$amount,
+      ':player_id'=>$player_id
+    ]);
+    //insert into game(game_id, date_begin) values(:game_id, :date_begin)
+    $stmt = $this->pdo->prepare("
+      insert into operation(date_op, game_id, from_player_id, to_player_id, amount) 
+      values(:date_op, :game_id, 0, :to_player_id, :amount)
+      ");
+    $r = $stmt->execute([
+      ':date_op'=>Database::NOW(),
+      ':game_id'=>$game_id,
+      ':to_player_id'=>$player_id,
+      ':amount'=>$amount
+    ]);
+  }
+  
+  /**
+   ** Give money from a player (or 0 for the bank) to an other player (or 0 for the bank)
+   **/
+  public function giveMoney($game_id, $from_id, $to_id, $amount)
+  {
+    // Get the game
+    $g = $this->loadGameFromDB($game_id);
+    if (count($g) === 0)
+      return -1;
+    $game = $g[0];
+    
+    // Decrease from account
+    if ($from_id == 0)
+    {
+      // From the bank
+      $stmt = $this->pdo->prepare("update game set bank_current = bank_current - :amount where game_id = :game_id");
+      $r = $stmt->execute([
+        ':amount'=>$amount,
+        ':game_id'=>$game_id
+      ]);
+    }
+    else
+    {
+      // From a player
+      $stmt = $this->pdo->prepare("update player set current = current - :amount where id = :from_id");
+      $r = $stmt->execute([
+        ':amount'=>$amount,
+        ':from_id'=>$from_id
+      ]);
+    }
+    // Increase to account
+    if ($to_id == 0)
+    {
+      // To the bank
+      $stmt = $this->pdo->prepare("update game set bank_current = bank_current + :amount where game_id = :game_id");
+      $r = $stmt->execute([
+        ':amount'=>$amount,
+        ':game_id'=>$game_id
+      ]);
+    }
+    else
+    {
+      // From a player
+      $stmt = $this->pdo->prepare("update player set current = current + :amount where id = :to_id");
+      $r = $stmt->execute([
+        ':amount'=>$amount,
+        ':to_id'=>$to_id
+      ]);
+    }
+    // Record history
+    $stmt = $this->pdo->prepare("
+      insert into operation(date_op, game_id, from_player_id, to_player_id, amount) 
+      values(:date_op, :game_id, :from_id, :to_id, :amount)
+      ");
+    $r = $stmt->execute([
+      ':date_op'=>Database::NOW(),
+      ':game_id'=>$game_id,
+      ':from_id'=>$from_id,
+      ':to_id'=>$to_id,
+      ':amount'=>$amount
+    ]);
+  }
 }

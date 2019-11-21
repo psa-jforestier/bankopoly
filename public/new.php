@@ -20,22 +20,37 @@ if (@$_REQUEST['action'] == 'post')
   
   if ($playerinit > $bankinit || !is_numeric($playerinit))
     $errors[] = T('!badplayeramount');
-  
-  if (count($Game->loadGameFromDB($gameid)) === 0)
+  $thegames = $Game->loadGameFromDB($gameid); 
+  if (count($thegames) === 0)
   {
     $errors[] = T('!badgameid');
   }
   else
   {
-    
+    $game = $thegames[0];
     // Game is ready to be created 
     if ($playername != '')
     {
+      
+      // Update the game and the bank player
       $Player = new DAOPlayer();
       $pid = $Player->createPlayer($playername, $gameid, 0);
       $Game->updateGame($gameid, $pid, $bankinit, $playerinit);
-      
+      $Game->giveBankMoneyToPlayer($gameid, $pid, $playerinit);
+
+      header("Location: ".$CONFIG['APP']['BASE_URL']."play.php?gameid=$gameid&playerid=$pid");
+      exit;
     }
+    else
+    {
+      // Update only the game, not the player
+      
+      $Player = new DAOPlayer();
+      $Game->updateGame($gameid, 0, $bankinit, $playerinit);
+      header("Location: ".$CONFIG['APP']['BASE_URL']."play.php?gameid=$gameid");
+      exit;
+    }
+    
   }
 }
 
@@ -59,12 +74,6 @@ else
 
 }
 
-function formatGameId($id)
-{
-  if (!is_numeric($id))
-    return $id;
-  return number_format($id, 0, ',', '-');
-}
 
 ?>
 
@@ -79,9 +88,9 @@ foreach($errors as $e)
 }
 ?>
 
-<?=T('new_bank_amount') ?> : <input name="bankinit" type="text" required value="<?=$bankinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
+<?=T('new_bank_amount') ?> : <input name="bankinit" size=8 type="text" required value="<?=$bankinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
 
-<?=T('new_start_amount') ?> : <input name="playerinit" type="text" required value="<?=$playerinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
+<?=T('new_start_amount') ?> : <input name="playerinit" size=8 type="text" required value="<?=$playerinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
 
 <?=T('new_game_id') ?> : <br/>
 <div class="panel"><code>[ <?= formatGameId($gameid) ?> ]</code></div><br/>

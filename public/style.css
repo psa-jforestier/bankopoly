@@ -13,6 +13,34 @@
   padding: 1px;
 }
 
+.currency::after {
+  content :"M";
+  font-size: 0.8em;
+  text-decoration: line-through;
+}
+
+.playerinfo {
+  background: #88F;
+  text-align: center;
+  color: #FFF;
+  padding: 3px;
+  font-size: 1.2em;
+}
+
+.playeraction {
+  background: #CCF;
+  color: #000;
+  padding: 3px;
+  font-size: 1.0em;
+}
+
+.history {
+  font-size: 0.9em;
+  font-family: "Consolas", "monaco", "Lucida Console", monospace;
+}
+
+/****************************/
+
 /** https://cantina.co/building-a-better-button-in-css/ **/@-webkit-keyframes button-busy {
   0% {
     opacity: 0.2;
@@ -42,7 +70,7 @@
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
   line-height: 1;
-  margin-top: 1.5rem;
+  /*margin-top: 1.0rem;*/
   transition: background-color 300ms, border-color 300ms, box-shadow 150ms;
   width: 100%;
 }
@@ -308,7 +336,7 @@
 
 body {
   color: #403f3c;
-  padding: 3rem;
+  padding: 1rem;
   background-color: #fefbef;
 }
 
@@ -326,6 +354,8 @@ h1, h2, h3 {
   margin: 0;
   padding: 0;
 }
+
+
 .background--dark h1,
 .background--dark h2,
 .background--dark h3 {
@@ -340,6 +370,10 @@ h1 {
 h2 {
   font-size: 1em;
   font-weight: 400;
+  background-color: #403f3c;
+  color: #fefbef;
+  letter-spacing: 1px;
+
 }
 
 h3 {
@@ -352,7 +386,7 @@ h3 {
 
 hr {
   border: 1px solid #403f3c;
-  margin-top: 2.5rem;
+  margin-top: 0.5rem;
 }
 .background--dark hr {
   border: 1px solid #fefbef;

@@ -27,7 +27,10 @@ class Database
   
   public static function NOW()
   {
-    return date('Y-M-D H:i:s');
+    return date(DATE_RFC3339);//'Y-M-D H:i:s');
+    //return date('Y-m-d H:i:s');//'Y-M-D H:i:s');
   }
 }
+
+
 
