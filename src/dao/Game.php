@@ -173,4 +173,47 @@ class DAOGame extends DAO
       ':amount'=>$amount
     ]);
   }
+  
+  public function purgeOldGame($seconds)
+  {
+    // Find all old game
+    $now = time();
+    $date = date(DATE_RFC3339, $now - $seconds);
+    /**
+    $stmt = $this->pdo->prepare("select game_id from game where date_begin < :date");
+    $r = $stmt->execute([
+      ':date'=>$date
+    ]);
+    $games = [];
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
+    {
+      $games[] = $row;
+    }
+    var_dump($games);
+    **/
+    $return = array();
+    // Remove old games
+    $stmt = $this->pdo->prepare("delete from game where date_begin < :date");
+    $r = $stmt->execute([
+      ':date'=>$date
+    ]);
+    $return['deletedgames'] = $stmt->rowCount();
+    // Remove orphan players
+    $stmt = $this->pdo->prepare("delete from player where id in (select 
+p.id
+from player p
+left join game g on p.game_id = g.game_id
+where g.game_id is NULL)");
+    $r = $stmt->execute();
+    $return['deletedplayers'] = $stmt->rowCount();
+    // Remove orphan operation
+        $stmt = $this->pdo->prepare("delete from operation where id in (select 
+o.id
+from operation o
+left join game g on o.game_id = g.game_id
+where g.game_id is NULL)");
+    $r = $stmt->execute();
+    $return['deletedoperations'] = $stmt->rowCount();
+    return $return;
+  }
 }

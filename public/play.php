@@ -202,7 +202,7 @@ if($is_bankmanager === true)
     }
     ?>
   <tr>
-    <td><?=$dt?></td>
+    <td><script>document.write(new Date("<?=$h['date_op']?>").toLocaleTimeString());</script></td>
     <td align=right><span id="bankamount" class="currency"><?=$sign?><?=formatAmount($h['amount']) ?></span></td>
     <td><?=$name?></td>
   </tr>
