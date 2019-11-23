@@ -3,13 +3,13 @@
 // Configuration file
 global $CONFIG;
 // Database MySQL
-$CONFIG['DB_DSN'] = 'mysql:dbname=testdb;host=127.0.0.1:3306';
+$CONFIG['DB_DSN'] = 'mysql:dbname=testdb;host=localhost';
 // Database SQLITE
 $CONFIG['DB_DSN'] = 'sqlite:'.realpath(dirname(__FILE__).'/../var/bankopoloy.sqlite');
 $CONFIG['DB_USER'] = 'username';
 $CONFIG['DB_PASS'] = 'password';
 
-$CONFIG['APP']['BASE_URL'] = '/';
+$CONFIG['APP']['BASE_URL'] = 'http://'.@$_SERVER["HTTP_HOST"].'/';
 $CONFIG['GAME']['BANK_MIN']  =         10;
 $CONFIG['GAME']['BANK_MAX']  = 1000000000;
 $CONFIG['GAME']['BANK_INIT'] =    1000000;
@@ -19,4 +19,6 @@ $CONFIG['GAME']['RELOAD_MIN'] = 3;
 $CONFIG['GAME']['RELOAD_MAX'] = 7;
 
 $CONFIG['PURGE'] = 24*60*60; // delete old game
+
+
 

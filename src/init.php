@@ -42,9 +42,9 @@ if (@$argv[1] == '--recreate')
 $sql[] = "
 create table 'game' (
   game_id char(8) primary key,
-  bank_start unsigned decimal(10,0),
-  bank_current unsigned decimal(10,0),
-  bank_init unsigned decimal(10,0),
+  bank_start decimal(10,0),
+  bank_current decimal(10,0),
+  bank_init decimal(10,0),
   date_begin datetime,
   bank_player_id integer
   )

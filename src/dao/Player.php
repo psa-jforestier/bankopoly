@@ -25,6 +25,7 @@ class DAOPlayer extends DAO
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
     {
       $players[$row['id']] = $row;
+	  
     }
     return $players;
   }
