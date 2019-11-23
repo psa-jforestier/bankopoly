@@ -52,6 +52,18 @@ class DAOGame extends DAO
     
   }
   
+  public function getNumberOfGames()
+  {
+    $stmt = $this->pdo->prepare("select count(*) as nb from game");
+    $stmt->execute();
+    $games = [];
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
+    {
+      $games[] = $row;
+    }
+    return $games[0];
+  }
+  
   public function loadGameFromDB($game_id)
   {
     

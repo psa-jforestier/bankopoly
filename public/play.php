@@ -71,8 +71,10 @@ $history = $History->getOperations($gameid, $playerid);
 ?>
 
 <h1><?=T('play_game_title')?></h1>
-<div class="playerinfo"><?=$my_name?> - <span class="currency"><?=formatAmount($my_account['current'])?></span></div>
+<div class="playerinfo"><?=$my_name?> - <span class="currency" id="my_current"><?=formatAmount($my_account['current'])?></span></div>
 <div class="panel"><code>[ <?= formatGameId($gameid) ?> ]</code></div><br/>
+
+<div id="players">
 <table border="1">
 <tr>
 <?php
@@ -95,7 +97,7 @@ foreach($players as $p)
 ?>
 </tr>
 </table>
-
+</div>
 <?php
 foreach($errors as $e)
 {
@@ -167,7 +169,61 @@ if($is_bankmanager === true)
 </form>
 </div>
 
+<input type="hidden" value="gameid=<?=$gameid?>&playerid=<?=$playerid?>" id="params"/>
+
+<script>
+var nextreload = 5000;
+(function worker() {
+  $.ajax({
+    url: 'api.php?action=info&' + $("#params").val(), 
+    beforeSend: function(xhr) {
+      //$("#my_current").text("?");
+    },
+    success: function(data) {
+      nextreload = data.reload;
+      v = (1 * data.me.current);
+      v_str = v.toLocaleString();
+      if (v_str != $("#my_current").text())
+      {
+        $("#my_current").text(v_str).fadeOut(150).fadeIn(150);
+        $("#history").html(data.history_html).fadeOut(150).fadeIn(150);
+      }
+      nbplayers = Object.keys(data.players).length;
+      // Refresh player table if change, and the drop down list
+      $("#players").html(data.players_html);
+      // 
+    },
+    complete: function() {
+      // Schedule the next request when the current one's complete
+      setTimeout(worker, nextreload);
+    }
+  });
+})();
+/*
+(function worker() {
+  $.ajax({
+    url: 'api.php?action=history&' + $("#params").val(), 
+    success: function(data) {
+      $('#history').html(data);
+      
+    },
+    complete: function() {
+      // Schedule the next request when the current one's complete
+      setTimeout(worker, 5000);
+    }
+  });
+})();
+*/
+//$('#refresh').load('api.php?action=history&' + $("#params").val()+" #history");
+/**
+setInterval(function(){
+      $('#history').load('api.php?action=history&' + $("#params").val());
+ },1000);
+ **/
+</script>
 <h2><?=T('play_histo')?></h2>
+
+<div id="history">
 <table border="1" class="history">
   <tr><td colspan=3><?=T('histo_account')?> : <span class="currency"><?=formatAmount($my_account['current'])?></span></td></tr>
   <tr>
@@ -210,5 +266,6 @@ if($is_bankmanager === true)
   }
 ?>
 </table>
+</div><!-- history -->
 <hr/>
 <a href="index.php"><?=T('go_to_welcome')?></a>

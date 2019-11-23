@@ -28,10 +28,13 @@ if (@$_REQUEST['action'] == 'post')
   else
   {
     $game = $thegames[0];
+    if ($playername == '')
+    {
+      $playername = "BANK".$gameid;
+    }
     // Game is ready to be created 
     if ($playername != '')
     {
-      
       // Update the game and the bank player
       $Player = new DAOPlayer();
       $pid = $Player->createPlayer($playername, $gameid, 0);

@@ -5,6 +5,8 @@ $_T['title'] = 'Bankopoly';
 $_T['create_game'] = 'Créer une partie';
 $_T['join_game'] = 'Rejoindre une partie';
 $_T['go_to_welcome'] = "Retour à l'accueil";
+$_T['nbparties'] = '%d parties en cours';
+$_T['nbparty'] = '%d partie en cours';
 
 // NEW GAME SCREEN
 $_T['new_bank_title'] = 'Créer une partie';

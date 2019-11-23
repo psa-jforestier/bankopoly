@@ -29,5 +29,34 @@ class DAOPlayer extends DAO
     return $players;
   }
   
+  public function getSimplePlayersOfAGame($game_id)
+  {
+    $stmt = $this->pdo->prepare("select id, name, current from player where game_id = :game_id order by lower(name)");
+    $stmt->execute([':game_id'=>$game_id]);
+    $players = [];
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
+    {
+      $players[$row['id']] = $row;
+    }
+    return $players;
+  }
+  
+  public function getPlayer($player_id, $game_id)
+  {
+
+    $stmt = $this->pdo->prepare("select * from player where id = :player_id and game_id = :game_id order by lower(name)");
+    $stmt->execute([
+      ':game_id'=>$game_id,
+      ':player_id'=>$player_id
+    ]);
+    $players = [];
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
+    {
+      $players[] = $row;
+    }
+    
+    return $players[0];
+  }
+  
 
 }
