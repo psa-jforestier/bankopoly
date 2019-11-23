@@ -13,9 +13,11 @@ $Player = new DAOPlayer();
 $action = @$_REQUEST['action'];
 if ($action == 'post')
 {
+  if ($playername == '')
+    $errors[] = T('!badplayername');
   if ($gameid == '')
     $errors[] = T('!badgameid');
-  else
+  if ($playername != '' && $gameid != '')
   {
     
 
@@ -36,8 +38,6 @@ if ($action == 'post')
       }
     }
   }
-  if ($playername == '')
-    $errors[] = T('!badplayername');
 }
 
 ?>

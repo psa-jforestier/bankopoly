@@ -336,7 +336,7 @@
 
 body {
   color: #403f3c;
-  padding: 1rem;
+  /**padding: 1rem;**/
   background-color: #fefbef;
 }
 

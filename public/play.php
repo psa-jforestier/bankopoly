@@ -12,6 +12,11 @@ $to_playerid = trim(@$_REQUEST['to_playerid']);
 $amount = trim(@$_REQUEST['amount']);
 $amountplayer = trim(@$_REQUEST['amountplayer']);
 
+if ($gameid == '')
+{
+	header('Location: index.php');
+	exit;
+}
 $Game = new DAOGame();
 $Player = new DAOPlayer();
 $History = new DAOHistory();
@@ -146,7 +151,7 @@ if($is_bankmanager === true)
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
 <div class="playeraction">
   <?=T('play_pay')?> <input type="numeric" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=8/> <?=T('play_pay_to')?> 
-  <select name="to_playerid">
+  <select name="to_playerid" id="playerlist">
   <option value="0">&#128181;<?=T('play_bank_title')?></option>
   <?php
   foreach($players as $p)
@@ -185,12 +190,33 @@ var nextreload = 5000;
       v_str = v.toLocaleString();
       if (v_str != $("#my_current").text())
       {
+		console.log("current amount of money changed");
         $("#my_current").text(v_str).fadeOut(150).fadeIn(150);
         $("#history").html(data.history_html).fadeOut(150).fadeIn(150);
       }
       nbplayers = Object.keys(data.players).length;
-      // Refresh player table if change, and the drop down list
-      $("#players").html(data.players_html);
+	  nbplayersinlist = $("#playerlist option").length ; // There is always a Bank, and the self player in the list (+1 -1)
+	  if (nbplayers != nbplayersinlist)
+	  {
+		// Refresh player table if change, and the drop down list
+		playerselected = $("#playerlist").prop('selectedIndex')
+		console.log("current number of players changed. selected = "+playerselected);
+		$("#players").html(data.players_html);
+		//if (nbplayersinlist < nbplayers)
+		{ // TODO find a solution to add/remove player and make it work even if the select is open
+			playerlist = $("#playerlist").empty();
+			playerlist.append('<option value="0">&#128181;<?=T('play_bank_title')?></option>');
+			Object.keys(data.players).forEach(function(item){
+				if (item != data.me.id)
+				{
+					selected = (playerselected == item ? 'selected' : '');
+					opt = '<option value="' + item + '" '+selected+'>'+data.players[item].name+"</option>";
+					playerlist.append(opt);
+				}
+			});
+		}
+		
+	  }
       // 
     },
     complete: function() {
@@ -268,4 +294,9 @@ setInterval(function(){
 </table>
 </div><!-- history -->
 <hr/>
-<a href="index.php"><?=T('go_to_welcome')?></a>
+<a href="index.php"><?=T('go_to_welcome')?></a><br/>
+<?php
+$join_url = $CONFIG['APP']['BASE_URL'].'join.php?gameid='.$gameid;
+?>
+<a href="<?=$join_url?>" target="_new"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?=urlencode($join_url)?>"/></a>
+
