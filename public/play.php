@@ -150,7 +150,7 @@ if($is_bankmanager === true)
 <h2><?=T('play_player')?></h2>
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
 <div class="playeraction">
-  <?=T('play_pay')?> <input type="number" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=1/> xxx <?=T('play_pay_to')?> 
+  <?=T('play_pay')?> <input type="number" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=1/><span class="currency"></span> <?=T('play_pay_to')?> 
   <select name="to_playerid" id="playerlist">
   <option value="0">&#128181;<?=T('play_bank_title')?></option>
   <?php
