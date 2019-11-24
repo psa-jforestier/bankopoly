@@ -91,9 +91,9 @@ foreach($errors as $e)
 }
 ?>
 
-<?=T('new_bank_amount') ?> : <input name="bankinit" size=8 type="text" required value="<?=$bankinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
+<?=T('new_bank_amount') ?> : <input name="bankinit" size=8 type="number" required value="<?=$bankinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
 
-<?=T('new_start_amount') ?> : <input name="playerinit" size=8 type="text" required value="<?=$playerinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
+<?=T('new_start_amount') ?> : <input name="playerinit" size=8 type="number" required value="<?=$playerinit?>" min="<?=$CONFIG['GAME']['BANK_MIN']?>" max="<?=$CONFIG['GAME']['BANK_MAX']?>" placeholder=""/><br/>
 
 <?=T('new_game_id') ?> : <br/>
 <div class="panel"><code>[ <?= formatGameId($gameid) ?> ]</code></div><br/>

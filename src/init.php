@@ -40,7 +40,7 @@ if (@$argv[1] == '--recreate')
   $sql[] = "drop table if exists game; drop table if exists  player; drop table if exists operation;";
 }
 $sql[] = "
-create table 'game' (
+create table `game` (
   game_id char(8) primary key,
   bank_start decimal(10,0),
   bank_current decimal(10,0),
@@ -51,8 +51,8 @@ create table 'game' (
 ";
 $sql[] = "create unique index x_game_game_id on game(game_id)";
 $sql[] = "
-create table 'player' (
-  id integer primary key,
+create table `player` (
+  id integer primary key AUTO_INCREMENT,
   game_id char(8),
   name varchar(255),
   current decimal(10,0),
@@ -61,10 +61,9 @@ create table 'player' (
 ";
 $sql[] = "create index x_player_game_id on player(game_id)";
 $sql[] = "
-create table 'operation' (
-  id integer primary key,
+create table `operation` (
+  id integer primary key AUTO_INCREMENT,
   date_op datetime,
-  date_op_str varchar,
   game_id char(8),
   from_player_id integer,
   to_player_id integer,

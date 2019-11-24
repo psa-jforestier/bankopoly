@@ -20,5 +20,7 @@ $CONFIG['GAME']['RELOAD_MAX'] = 7;
 
 $CONFIG['PURGE'] = 24*60*60; // delete old game
 
-
+// Load extra params if exists
+if (file_exists(dirname(__FILE__).'/parameters.extra.php'))
+  include_once(dirname(__FILE__).'/parameters.extra.php');
 

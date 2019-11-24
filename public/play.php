@@ -123,7 +123,7 @@ if($is_bankmanager === true)
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
 <span id="bankamount" class="currency"><?=formatAmount($game['bank_current']) ?></span>
 <br/>
-<?=T('play_bank_give')?> <input type="numeric" id="amount" name="amount" size=8 value="<?=$amount?>"/>
+<?=T('play_bank_give')?> <input type="number" id="amount" name="amount" size=8 value="<?=$amount?>"/>
 <?=T('play_bank_to')?>
 <select name="to_playerid">
   <!-- <option value="0"><?=T('play_bank_title')?></option> -->
@@ -150,7 +150,7 @@ if($is_bankmanager === true)
 <h2><?=T('play_player')?></h2>
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
 <div class="playeraction">
-  <?=T('play_pay')?> <input type="numeric" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=8/> <?=T('play_pay_to')?> 
+  <?=T('play_pay')?> <input type="number" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=1/> xxx <?=T('play_pay_to')?> 
   <select name="to_playerid" id="playerlist">
   <option value="0">&#128181;<?=T('play_bank_title')?></option>
   <?php
@@ -180,7 +180,7 @@ if($is_bankmanager === true)
 var nextreload = 5000;
 (function worker() {
   $.ajax({
-    url: 'api.php?action=info&' + $("#params").val(), 
+    url: 'api.php?action=info&' + $("#params").val() + "&_="+(new Date().getTime()), 
     beforeSend: function(xhr) {
       //$("#my_current").text("?");
     },

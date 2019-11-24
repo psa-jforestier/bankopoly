@@ -39,6 +39,17 @@
   font-family: "Consolas", "monaco", "Lucida Console", monospace;
 }
 
+select {
+    font: inherit;
+}
+
+input  {
+    font: inherit;
+}
+
+input[type="number"] {
+   width:5.0em;
+}
 /****************************/
 
 /** https://cantina.co/building-a-better-button-in-css/ **/@-webkit-keyframes button-busy {
