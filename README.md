@@ -23,10 +23,13 @@ You can also use the standalone PHP webserver. Just run it like this :
 $> php -S 0.0.0.0:80 -t ./public/
 ``` 
 
-Copy the file`config/parameters.php.dist` to `config/pararmeters.php` and edit it. In this file, you can indicate the Database URN, etc...
+To configure a new instance of the game and host it yourself, modify `config/parameters.php` or override params in `config/parameters.extra.php` (this file must not be commited).
+
 To initialize the database, run the script `./src/init.php`.
 
 # Playing
+
+Go to the test instance here : http://bankopoly.forestier.xyz.
 
 ## Creating a game
 
