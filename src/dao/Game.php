@@ -211,19 +211,36 @@ class DAOGame extends DAO
     ]);
     $return['deletedgames'] = $stmt->rowCount();
     // Remove orphan players
-    $stmt = $this->pdo->prepare("delete from player where id in (select 
-p.id
-from player p
-left join game g on p.game_id = g.game_id
-where g.game_id is NULL)");
+    $stmt = $this->pdo->prepare("delete 
+from 
+  player 
+where 
+  id in (
+    select * from ( 
+        select
+            P.id
+            from player P
+            left join game G on G.game_id = P.game_id
+            where G.game_id is null
+        ) as t
+  )");
     $r = $stmt->execute();
     $return['deletedplayers'] = $stmt->rowCount();
     // Remove orphan operation
-        $stmt = $this->pdo->prepare("delete from operation where id in (select 
-o.id
-from operation o
-left join game g on o.game_id = g.game_id
-where g.game_id is NULL)");
+        $stmt = $this->pdo->prepare("delete 
+from 
+  operation 
+where 
+  id in (
+    select * from ( 
+        select
+            O.id
+            from operation O
+            left join game G on G.game_id = O.game_id
+            where G.game_id is null
+        ) as t
+  )
+");
     $r = $stmt->execute();
     $return['deletedoperations'] = $stmt->rowCount();
     return $return;

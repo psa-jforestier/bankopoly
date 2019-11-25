@@ -34,6 +34,13 @@ catch (PDOException $e)
 
 $sql = [];
 
+/**
+ ** SQL instruction must be compatible with MySQL and SQLite.
+ ** Use the special MySQL comment to include keyword only valid for MySQL.
+ **/
+$IF_MYSQL="/*!40101";
+$ENDIF_MYSQL = "*/";
+
 $sql = [];
 if (@$argv[1] == '--recreate')
 {
@@ -52,7 +59,7 @@ create table `game` (
 $sql[] = "create unique index x_game_game_id on game(game_id)";
 $sql[] = "
 create table `player` (
-  id integer primary key AUTO_INCREMENT,
+  id integer primary key $IF_MYSQL AUTO_INCREMENT $ENDIF_MYSQL,
   game_id char(8),
   name varchar(255),
   current decimal(10,0),
@@ -62,7 +69,7 @@ create table `player` (
 $sql[] = "create index x_player_game_id on player(game_id)";
 $sql[] = "
 create table `operation` (
-  id integer primary key AUTO_INCREMENT,
+  id integer primary key $IF_MYSQL AUTO_INCREMENT $ENDIF_MYSQL,
   date_op datetime,
   game_id char(8),
   from_player_id integer,
