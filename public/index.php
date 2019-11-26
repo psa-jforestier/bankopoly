@@ -16,7 +16,9 @@ $nb = $Game->getNumberOfGames()['nb'];
 <?=($nb > 1 ? sprintf(T('nbparties'), $nb) : sprintf(T('nbparty'), $nb))?>
 </form>
 
-
+<hr/>
+[ <a href="https://github.com/psa-jforestier/bankopoly">Fork me on GitHub</a> ]
+<hr/>
 <?php
 
 include('footer.php');
