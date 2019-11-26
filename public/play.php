@@ -118,7 +118,7 @@ foreach($errors as $e)
 if($is_bankmanager === true)
 { // am i the bankmanager
   ?>
-<h2>&#128181;<?=T('play_bank_title')?> <a href="#" onclick='$("#bankmanager").toggle(); return false;'>...</a></h2>
+<h2>&#128181;<?=T('play_bank_title')?> <span style="float: right;"><a class="nostyle" href="#" onclick='$("#bankmanager").toggle(); return false;' >[...]</a></span></h2>
 <div id="bankmanager">
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
 <span id="bankamount" class="currency"><?=formatAmount($game['bank_current']) ?></span>
@@ -140,7 +140,7 @@ if($is_bankmanager === true)
 </select>
 <input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
 <br/>
-<a href="#" onclick='$("#amount").val($(this).text()); return false;'>50</a> | <a href="#" onclick='$("#amount").val($(this).text()); return false;'>200</a>
+<a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>200</a>
 </div>
 </form>
 <?php
@@ -169,7 +169,7 @@ if($is_bankmanager === true)
 </select>
 <input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
 <br/>
-<a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>50</a> | <a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>100</a> | <a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>150</a> | <a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>200</a>
+<a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>100</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>150</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>200</a>
 
 </form>
 </div>

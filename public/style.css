@@ -50,6 +50,23 @@ input  {
 input[type="number"] {
    width:5.0em;
 }
+
+a.nostyle:link, a.nostyle:visited {
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+}
+
+a.banknote:link, a.banknote:visited {
+  cursor: pointer;
+  background-color: #98f177;
+  border:1px solid #000;
+  text-decoration: none;
+  color: #000;
+  padding-left:0.25em;
+  padding-right:0.25em;
+}
+
 /****************************/
 
 /** https://cantina.co/building-a-better-button-in-css/ **/@-webkit-keyframes button-busy {
@@ -290,6 +307,8 @@ input[type="number"] {
   border-radius: 0.5rem;
   font-size: 0.8em;
   min-height: 2rem;
+  margin-top: 1em;
+  margin-bottom:1em;
 }
 .button--small.button--hollow {
   border-width: 2px;
