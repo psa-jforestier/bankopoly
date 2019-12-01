@@ -29,7 +29,10 @@ $_T['!badplayername'] = 'Nom de joueur invalide';
 
 // PLAY
 $_T['play_game_title'] = 'Partie en cours';
-$_T['play_bank_title'] = 'Banque';
+$_T['play_bank_name'] = 'La banque';
+$_T['play_bank_title'] = 'La banque joue';
+$_T['play_bank_amount'] = 'La banque possède';
+$_T['play_player_amount'] = 'Joueur <b>%s</b> possède';
 $_T['play_bank_give'] = 'Payer';
 $_T['play_bank_ok'] = 'OK';
 $_T['play_bank_to'] = 'à';

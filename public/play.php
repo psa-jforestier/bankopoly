@@ -118,41 +118,45 @@ foreach($errors as $e)
 if($is_bankmanager === true)
 { // am i the bankmanager
   ?>
-<h2>&#128181;<?=T('play_bank_title')?> <span style="float: right;"><a class="nostyle" href="#" onclick='$("#bankmanager").toggle(); return false;' >[...]</a></span></h2>
-<div id="bankmanager">
-<form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
-<span id="bankamount" class="currency"><?=formatAmount($game['bank_current']) ?></span>
-<br/>
-<?=T('play_bank_give')?> <input type="number" id="amount" name="amount" size=8 value="<?=$amount?>"/>
-<?=T('play_bank_to')?>
-<select name="to_playerid">
-  <!-- <option value="0"><?=T('play_bank_title')?></option> -->
-  <?php
-  foreach($players as $p)
-  {
-    echo "<option value=\"", $p['id'], "\"";
-    if ($p['id'] == $to_playerid) echo " selected ";
-    echo ">";
-    echo $p['name'];
-    echo "</option>\n";
-  }
-  ?>
-</select>
-<input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
-<br/>
-<a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>200</a>
-</div>
-</form>
+<fieldset class="bankpanel">
+	<legend>&nbsp;&#128181; <?=T('play_bank_title')?> &nbsp; &nbsp;<span style="float: right;"><a class="nostyle" href="#" onclick='$("#bankmanager").toggle(); return false;' >[...]</a>&nbsp;</span></legend>
+	<div id="bankmanager">
+		<?=T('play_bank_amount')?> : <span id="bankamount" class="currency"><?=formatAmount($game['bank_current']) ?></span><br/>
+		<form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
+		<?=T('play_bank_give')?> <input type="number" id="amount" name="amount" size=8 value="<?=$amount?>"/>
+		<?=T('play_bank_to')?>
+		<select name="to_playerid">
+		  <!-- <option value="0"><?=T('play_bank_title')?></option> -->
+		  <?php
+		  foreach($players as $p)
+		  {
+			echo "<option value=\"", $p['id'], "\"";
+			if ($p['id'] == $to_playerid) echo " selected ";
+			echo ">";
+			echo $p['name'];
+			echo "</option>\n";
+		  }
+		  ?>
+		</select>
+		<input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
+		<br/>
+		<a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>200</a>
+
+		</form>
+	</div>
+</fieldset>
+  
 <?php
 } // am i the bankmanager
 ?>
 
-<h2><?=T('play_player')?></h2>
+<fieldset class="playeraction">
+	<legend>&nbsp;<?=T('play_player')?> <?=$my_name?>&nbsp;</legend>
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
-<div class="playeraction">
+  <?=sprintf(T('play_player_amount'), $my_name)?> <span class="currency" id="my_current"><?=formatAmount($my_account['current'])?></span><br/>
   <?=T('play_pay')?> <input type="number" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=1/><span class="currency"></span> <?=T('play_pay_to')?> 
   <select name="to_playerid" id="playerlist">
-  <option value="0">&#128181;<?=T('play_bank_title')?></option>
+  <option value="0">&#128181; <?=T('play_bank_name')?></option>
   <?php
   foreach($players as $p)
   {
@@ -172,9 +176,14 @@ if($is_bankmanager === true)
 <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>100</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>150</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>200</a>
 
 </form>
-</div>
+
 
 <input type="hidden" value="gameid=<?=$gameid?>&playerid=<?=$playerid?>" id="params"/>
+
+<br/>
+
+<fieldset class="historypanel">
+	<legend>&nbsp;<?=T('play_histo')?>&nbsp;</legend>
 
 <script>
 var nextreload = 5000;
@@ -247,11 +256,11 @@ setInterval(function(){
  },1000);
  **/
 </script>
-<h2><?=T('play_histo')?></h2>
+
 
 <div id="history">
 <table border="1" class="history">
-  <tr><td colspan=3><?=T('histo_account')?> : <span class="currency"><?=formatAmount($my_account['current'])?></span></td></tr>
+  
   <tr>
     <th><?=T('histo_col1')?></th>
     <th><?=T('histo_col2')?></th>
@@ -270,7 +279,7 @@ setInterval(function(){
     {
       $sign = '+';
       if ($from == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$from]['name'];
     }
@@ -278,7 +287,7 @@ setInterval(function(){
     {
       $sign = '-';
       if ($to == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$to]['name'];
     }
@@ -293,6 +302,9 @@ setInterval(function(){
 ?>
 </table>
 </div><!-- history -->
+
+</fieldset><!-- history -->
+</fieldset><!-- player -->
 <hr/>
 <a href="index.php"><?=T('go_to_welcome')?></a><br/>
 <?php
@@ -300,3 +312,27 @@ $join_url = $CONFIG['APP']['BASE_URL'].'join.php?gameid='.$gameid;
 ?>
 <a href="<?=$join_url?>" target="_new"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?=urlencode($join_url)?>"/></a>
 
+<hr/>
+<fieldset>
+	<legend>La banque joue</legend>
+	La banque possède : <span class="currency">xxx xxx</span><br/>
+	La banque donne [____] à [___\/] [ OK ] <br/>
+	[ 50 ] [ 200 ]
+</fieldset>
+<fieldset>
+	<legend>Joueur XX</legend>
+	Joueur XX possède : <span class="currency">xxx xxx</span><br/>
+	Joueur XX donne [____] à [___\/] [ OK ] <br/>
+	[ 50 ] [ 100 ] [ 150 ] [ 200 ] <br/>
+	<fieldset>
+	<legend>Historique</legend>
+	</fieldset>
+</fieldset>
+<fieldset>
+	<legend>Autres joueurs</legend>
+	Tableaux des autres joueurs
+<fieldset>
+<fieldset>
+	<legend>Rejoindre la partie \/</legend>
+	[ AA-BBB-CCC ]
+	[ QR ]

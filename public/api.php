@@ -49,7 +49,7 @@ else if ($action == 'info')
     {
       $sign = '+';
       if ($from == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$from]['name'];
     }
@@ -57,7 +57,7 @@ else if ($action == 'info')
     {
       $sign = '-';
       if ($to == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$to]['name'];
     }
@@ -78,7 +78,6 @@ else if ($action == 'info')
   $result['history'] = $histo;
   $result['history_html'] = '
 <table border="1" class="history">
-  <tr><td colspan=3>'.T('histo_account').' : <span class="currency">'.formatAmount($my_account['current']).'</span></td></tr>
   <tr>
     <th>'.T('histo_col1').'</th>
     <th>'.T('histo_col2').'</th>
