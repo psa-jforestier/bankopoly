@@ -76,33 +76,7 @@ $history = $History->getOperations($gameid, $playerid);
 ?>
 
 <h1><?=T('play_game_title')?></h1>
-<div class="playerinfo"><?=$my_name?> - <span class="currency" id="my_current"><?=formatAmount($my_account['current'])?></span></div>
-<div class="panel"><code>[ <?= formatGameId($gameid) ?> ]</code></div><br/>
 
-<div id="players">
-<table border="1">
-<tr>
-<?php
-foreach($players as $p)
-{
-  ?>
-  <td><?=$p['name']?></td>
-  <?php
-}
-?>
-</tr>
-<tr>
-<?php
-foreach($players as $p)
-{
-  ?>
-  <td align="right" class="currency"><?=formatAmount($p['current'])?></td>
-  <?php
-}
-?>
-</tr>
-</table>
-</div>
 <?php
 foreach($errors as $e)
 {
@@ -145,7 +119,7 @@ if($is_bankmanager === true)
 		</form>
 	</div>
 </fieldset>
-  
+<hr/>
 <?php
 } // am i the bankmanager
 ?>
@@ -179,6 +153,7 @@ if($is_bankmanager === true)
 
 
 <input type="hidden" value="gameid=<?=$gameid?>&playerid=<?=$playerid?>" id="params"/>
+<input type="hidden" value="" id="last_action_date"/>
 
 <br/>
 
@@ -199,34 +174,36 @@ var nextreload = 5000;
       v_str = v.toLocaleString();
       if (v_str != $("#my_current").text())
       {
-		console.log("current amount of money changed");
+        console.log("current amount of money changed");
         $("#my_current").text(v_str).fadeOut(150).fadeIn(150);
         $("#history").html(data.history_html).fadeOut(150).fadeIn(150);
       }
       nbplayers = Object.keys(data.players).length;
-	  nbplayersinlist = $("#playerlist option").length ; // There is always a Bank, and the self player in the list (+1 -1)
-	  if (nbplayers != nbplayersinlist)
-	  {
-		// Refresh player table if change, and the drop down list
-		playerselected = $("#playerlist").prop('selectedIndex')
-		console.log("current number of players changed. selected = "+playerselected);
-		$("#players").html(data.players_html);
-		//if (nbplayersinlist < nbplayers)
-		{ // TODO find a solution to add/remove player and make it work even if the select is open
-			playerlist = $("#playerlist").empty();
-			playerlist.append('<option value="0">&#128181;<?=T('play_bank_title')?></option>');
-			Object.keys(data.players).forEach(function(item){
-				if (item != data.me.id)
-				{
-					selected = (playerselected == item ? 'selected' : '');
-					opt = '<option value="' + item + '" '+selected+'>'+data.players[item].name+"</option>";
-					playerlist.append(opt);
-				}
-			});
-		}
-		
-	  }
-      // 
+      nbplayersinlist = $("#playerlist option").length ; // There is always a Bank, and the self player in the list (+1 -1)
+      last_action_date = $("#last_action_date").val();
+      if (nbplayers != nbplayersinlist || last_action_date != data.last_action_date)
+      {
+        // Refresh player table if change, and the drop down list
+        playerselected = $("#playerlist").prop('selectedIndex')
+        console.log("Something have changed. selected = "+playerselected);
+        $("#players").html(data.players_html);
+        //if (nbplayersinlist < nbplayers)
+        { // TODO find a solution to add/remove player and make it work even if the select is open
+          playerlist = $("#playerlist").empty();
+          playerlist.append('<option value="0">&#128181;<?=T('play_bank_name')?></option>');
+          Object.keys(data.players).forEach(function(item){
+            if (item != data.me.id)
+            {
+              selected = (playerselected == item ? 'selected' : '');
+              opt = '<option value="' + item + '" '+selected+'>'+data.players[item].name+"</option>";
+              playerlist.append(opt);
+            }
+          });
+        }
+        $("#last_action_date").val(data.last_action_date);
+        $("#bankamount").html(data.bankamount);
+      }
+      //  Success
     },
     complete: function() {
       // Schedule the next request when the current one's complete
@@ -258,7 +235,7 @@ setInterval(function(){
 </script>
 
 
-<div id="history">
+<div id="history" style="overflow-y: scroll;height: 10em;">
 <table border="1" class="history">
   
   <tr>
@@ -294,7 +271,7 @@ setInterval(function(){
     ?>
   <tr>
     <td><script>document.write(new Date("<?=$h['date_op']?>").toLocaleTimeString());</script></td>
-    <td align=right><span id="bankamount" class="currency"><?=$sign?><?=formatAmount($h['amount']) ?></span></td>
+    <td align=right><span class="currency"><?=$sign?><?=formatAmount($h['amount']) ?></span></td>
     <td><?=$name?></td>
   </tr>
     <?php
@@ -306,33 +283,49 @@ setInterval(function(){
 </fieldset><!-- history -->
 </fieldset><!-- player -->
 <hr/>
-<a href="index.php"><?=T('go_to_welcome')?></a><br/>
+
+<fieldset>
+  <legend> &nbsp;<?=T('other_player')?>&nbsp;</legend>
+  <div id="players">
+  <table border="1">
+  <tr>
+  <?php
+  foreach($players as $p)
+  {
+    ?>
+    <td><?=$p['name']?></td>
+    <?php
+  }
+  ?>
+  </tr>
+  <tr>
+  <?php
+  foreach($players as $p)
+  {
+    ?>
+    <td align="right" class="currency"><?=formatAmount($p['current'])?></td>
+    <?php
+  }
+  ?>
+  </tr>
+  </table>
+  <br/>
+  </div>
+  <fieldset>
+    <legend>&nbsp;<?=T('other_join')?>&nbsp; &nbsp; <span style="float: right;"><a class="nostyle" href="#" onclick='$("#join").toggle(); return false;' >[...]</a>&nbsp;</span></legend>
+    <div id="join" style="display:none";>
+    
 <?php
 $join_url = $CONFIG['APP']['BASE_URL'].'join.php?gameid='.$gameid;
 ?>
-<a href="<?=$join_url?>" target="_new"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?=urlencode($join_url)?>"/></a>
+    <div class="panel">
+    <code>[ <a href="<?=$join_url?>" target="_new"><?= formatGameId($gameid) ?></a> ]</code><br/>
+    <a href="<?=$join_url?>" target="_new"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?=urlencode($join_url)?>"/></a>
+    </div>
+    </div>
+  </fieldset>
+</fieldset>
 
+<a href="index.php"><?=T('go_to_welcome')?></a><br/>
 <hr/>
-<fieldset>
-	<legend>La banque joue</legend>
-	La banque possède : <span class="currency">xxx xxx</span><br/>
-	La banque donne [____] à [___\/] [ OK ] <br/>
-	[ 50 ] [ 200 ]
-</fieldset>
-<fieldset>
-	<legend>Joueur XX</legend>
-	Joueur XX possède : <span class="currency">xxx xxx</span><br/>
-	Joueur XX donne [____] à [___\/] [ OK ] <br/>
-	[ 50 ] [ 100 ] [ 150 ] [ 200 ] <br/>
-	<fieldset>
-	<legend>Historique</legend>
-	</fieldset>
-</fieldset>
-<fieldset>
-	<legend>Autres joueurs</legend>
-	Tableaux des autres joueurs
-<fieldset>
-<fieldset>
-	<legend>Rejoindre la partie \/</legend>
-	[ AA-BBB-CCC ]
-	[ QR ]
+

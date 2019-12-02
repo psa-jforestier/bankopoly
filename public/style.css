@@ -77,6 +77,7 @@ a.banknote:link, a.banknote:visited {
   color: #000;
   padding-left:0.25em;
   padding-right:0.25em;
+  font-family: Serif;
 }
 
 /****************************/
@@ -380,6 +381,7 @@ body {
   color: #403f3c;
   /**padding: 1rem;**/
   background-color: #fefbef;
+  font-family: Sans-serif;
 }
 
 .background {

@@ -19,13 +19,25 @@ if ($action == 'purge')
 }
 else if ($action == 'info')
 {
+  
   $History = new DAOHistory();
   $history = $History->getOperations($gameid, $playerid);
+  $lastdate = $History->getLastOperationDate($gameid);
+  //var_dump($history);
   $Player = new DAOPlayer();
   $players = $Player->getPlayersOfAGame($gameid);
   $my_account = $Player->getPlayer($playerid, $gameid);
+  $Game = new DAOGame();
+  $thegames = $Game->loadGameFromDB($gameid); 
+  if (count($thegames) === 0)
+    $bankamount = 0;
+  else
+    $bankamount = $thegames[0]['bank_current'];
   $result['reload'] = rand(1000*$CONFIG['GAME']['RELOAD_MIN'], 1000*$CONFIG['GAME']['RELOAD_MAX']);
+  $result['last_action_date'] = $lastdate;
+  $result['bankamount']= formatAmount($bankamount);
   $result['me'] = $my_account;
+  
   $players_html = '<table border="1"><tr>';
   foreach($players as $p)
   {
@@ -69,7 +81,7 @@ else if ($action == 'info')
     $histo_content .= '
   <tr>
     <td><div id="date'.$i.'"></div><script>$("#date'.$i.'").html(new Date("'.$h['date_op'].'").toLocaleTimeString());</script></td>
-    <td align=right><span id="bankamount" class="currency">'.$sign.formatAmount($h['amount']).'</span></td>
+    <td align=right><span class="currency">'.$sign.formatAmount($h['amount']).'</span></td>
     <td>'.$name.'</td>
   </tr>
   ';
