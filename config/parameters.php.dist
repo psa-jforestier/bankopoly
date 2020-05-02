@@ -18,7 +18,12 @@ $CONFIG['GAME']['ID_LENGTH'] = 8;
 $CONFIG['GAME']['RELOAD_MIN'] = 3;
 $CONFIG['GAME']['RELOAD_MAX'] = 7;
 
-$CONFIG['PURGE'] = 24*60*60; // delete old game
+$CONFIG['PURGE'] = 24*60*60; // Delete game is older than this value
+$CONFIG['PURGE_KEEP_OLD_GAME'] = true; // Keep old game in database instead of delete them after the PURGE time
 
+$CONFIG['LOG_FILE']=dirname(__FILE__).'/../var/bankopoly.log'; // Filename of the application log file. Set to NULL to not log anything.
 
+// Load extra params if exists
+if (file_exists(dirname(__FILE__).'/parameters.extra.php'))
+  include_once(dirname(__FILE__).'/parameters.extra.php');
 

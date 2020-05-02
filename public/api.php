@@ -8,24 +8,44 @@ $action = @$_REQUEST['action'];
 $gameid = @$_REQUEST['gameid'];
 $playerid = @$_REQUEST['playerid'];
 
+
+
 if ($action == 'purge')
 {
   $Game = new DAOGame();
-  $result = $Game->purgeOldGame($CONFIG['PURGE']);
+  $result = $Game->purgeOldGame($CONFIG['PURGE'], $CONFIG['PURGE_KEEP_OLD_GAME']);
   $result['time_s'] = (microtime(true) - $T);
+  if ($result['deletedgames'] != 0)
+  {
+    $LOGGER->info(sprintf('Old objects purged : %d game, %d player, %d operations', 
+    $result['deletedgames'], $result['deletedplayers'], $result['deletedoperations']));
+  }
   header('content-type: application/json');
   echo json_encode($result);
+  
   exit;
 }
 else if ($action == 'info')
 {
+  
   $History = new DAOHistory();
   $history = $History->getOperations($gameid, $playerid);
+  $lastdate = $History->getLastOperationDate($gameid);
+  //var_dump($history);
   $Player = new DAOPlayer();
   $players = $Player->getPlayersOfAGame($gameid);
   $my_account = $Player->getPlayer($playerid, $gameid);
+  $Game = new DAOGame();
+  $thegames = $Game->loadGameFromDB($gameid); 
+  if (count($thegames) === 0)
+    $bankamount = 0;
+  else
+    $bankamount = $thegames[0]['bank_current'];
   $result['reload'] = rand(1000*$CONFIG['GAME']['RELOAD_MIN'], 1000*$CONFIG['GAME']['RELOAD_MAX']);
+  $result['last_action_date'] = $lastdate;
+  $result['bankamount']= formatAmount($bankamount);
   $result['me'] = $my_account;
+  
   $players_html = '<table border="1"><tr>';
   foreach($players as $p)
   {
@@ -49,7 +69,7 @@ else if ($action == 'info')
     {
       $sign = '+';
       if ($from == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$from]['name'];
     }
@@ -57,7 +77,7 @@ else if ($action == 'info')
     {
       $sign = '-';
       if ($to == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$to]['name'];
     }
@@ -69,7 +89,7 @@ else if ($action == 'info')
     $histo_content .= '
   <tr>
     <td><div id="date'.$i.'"></div><script>$("#date'.$i.'").html(new Date("'.$h['date_op'].'").toLocaleTimeString());</script></td>
-    <td align=right><span id="bankamount" class="currency">'.$sign.formatAmount($h['amount']).'</span></td>
+    <td align=right><span class="currency">'.$sign.formatAmount($h['amount']).'</span></td>
     <td>'.$name.'</td>
   </tr>
   ';
@@ -78,7 +98,6 @@ else if ($action == 'info')
   $result['history'] = $histo;
   $result['history_html'] = '
 <table border="1" class="history">
-  <tr><td colspan=3>'.T('histo_account').' : <span class="currency">'.formatAmount($my_account['current']).'</span></td></tr>
   <tr>
     <th>'.T('histo_col1').'</th>
     <th>'.T('histo_col2').'</th>

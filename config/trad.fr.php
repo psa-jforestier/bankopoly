@@ -5,8 +5,8 @@ $_T['title'] = 'Bankopoly';
 $_T['create_game'] = 'Créer une partie';
 $_T['join_game'] = 'Rejoindre une partie';
 $_T['go_to_welcome'] = "Retour à l'accueil";
-$_T['nbparties'] = '%d parties en cours';
 $_T['nbparty'] = '%d partie en cours';
+$_T['nbparties'] = '%d parties en cours';
 
 // NEW GAME SCREEN
 $_T['new_bank_title'] = 'Créer une partie';
@@ -29,7 +29,10 @@ $_T['!badplayername'] = 'Nom de joueur invalide';
 
 // PLAY
 $_T['play_game_title'] = 'Partie en cours';
-$_T['play_bank_title'] = 'Banque';
+$_T['play_bank_name'] = 'La banque';
+$_T['play_bank_title'] = 'La banque joue';
+$_T['play_bank_amount'] = 'La banque possède';
+$_T['play_player_amount'] = 'Joueur <b>%s</b> possède';
 $_T['play_bank_give'] = 'Payer';
 $_T['play_bank_ok'] = 'OK';
 $_T['play_bank_to'] = 'à';
@@ -41,6 +44,8 @@ $_T['histo_account'] = 'Vous possédez ';
 $_T['histo_col1'] = 'Quand';
 $_T['histo_col2'] = 'Combien';
 $_T['histo_col3'] = 'Provenance / destination';
+$_T['other_player'] = 'Autres joueurs';
+$_T['other_join'] = 'Rejoindre la partie';
 $_T['!badamount'] = 'Le montant est invalide';
 $_T['!badself'] = 'Vous ne pouvez pas vous payer vous même';
 $_T['!bankroute'] = 'Vous avez fais faillite !';

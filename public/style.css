@@ -39,6 +39,14 @@
   font-family: "Consolas", "monaco", "Lucida Console", monospace;
 }
 
+.bankpanel {
+	background: #DFD;
+}
+
+.historypanel {
+	background: #EEF;
+}
+
 select {
     font: inherit;
 }
@@ -50,6 +58,28 @@ input  {
 input[type="number"] {
    width:5.0em;
 }
+
+fieldset {
+	padding:0.1em;	
+}
+
+a.nostyle:link, a.nostyle:visited {
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+}
+
+a.banknote:link, a.banknote:visited {
+  cursor: pointer;
+  background-color: #98f177;
+  border:1px solid #000;
+  text-decoration: none;
+  color: #000;
+  padding-left:0.25em;
+  padding-right:0.25em;
+  font-family: Serif;
+}
+
 /****************************/
 
 /** https://cantina.co/building-a-better-button-in-css/ **/@-webkit-keyframes button-busy {
@@ -290,6 +320,8 @@ input[type="number"] {
   border-radius: 0.5rem;
   font-size: 0.8em;
   min-height: 2rem;
+  margin-top: 1em;
+  margin-bottom:1em;
 }
 .button--small.button--hollow {
   border-width: 2px;
@@ -349,6 +381,7 @@ body {
   color: #403f3c;
   /**padding: 1rem;**/
   background-color: #fefbef;
+  font-family: Sans-serif;
 }
 
 .background {
@@ -361,7 +394,7 @@ body {
   background-color: #403f3c;
 }
 
-h1, h2, h3 {
+h1, h2, h3, legend {
   margin: 0;
   padding: 0;
 }
@@ -369,6 +402,7 @@ h1, h2, h3 {
 
 .background--dark h1,
 .background--dark h2,
+.background--dark legend,
 .background--dark h3 {
   color: #fefbef;
 }
@@ -378,7 +412,7 @@ h1 {
   font-weight: 600;
 }
 
-h2 {
+h2,legend {
   font-size: 1em;
   font-weight: 400;
   background-color: #403f3c;

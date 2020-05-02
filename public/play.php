@@ -76,33 +76,7 @@ $history = $History->getOperations($gameid, $playerid);
 ?>
 
 <h1><?=T('play_game_title')?></h1>
-<div class="playerinfo"><?=$my_name?> - <span class="currency" id="my_current"><?=formatAmount($my_account['current'])?></span></div>
-<div class="panel"><code>[ <?= formatGameId($gameid) ?> ]</code></div><br/>
 
-<div id="players">
-<table border="1">
-<tr>
-<?php
-foreach($players as $p)
-{
-  ?>
-  <td><?=$p['name']?></td>
-  <?php
-}
-?>
-</tr>
-<tr>
-<?php
-foreach($players as $p)
-{
-  ?>
-  <td align="right" class="currency"><?=formatAmount($p['current'])?></td>
-  <?php
-}
-?>
-</tr>
-</table>
-</div>
 <?php
 foreach($errors as $e)
 {
@@ -118,41 +92,45 @@ foreach($errors as $e)
 if($is_bankmanager === true)
 { // am i the bankmanager
   ?>
-<h2>&#128181;<?=T('play_bank_title')?> <a href="#" onclick='$("#bankmanager").toggle(); return false;'>...</a></h2>
-<div id="bankmanager">
-<form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
-<span id="bankamount" class="currency"><?=formatAmount($game['bank_current']) ?></span>
-<br/>
-<?=T('play_bank_give')?> <input type="number" id="amount" name="amount" size=8 value="<?=$amount?>"/>
-<?=T('play_bank_to')?>
-<select name="to_playerid">
-  <!-- <option value="0"><?=T('play_bank_title')?></option> -->
-  <?php
-  foreach($players as $p)
-  {
-    echo "<option value=\"", $p['id'], "\"";
-    if ($p['id'] == $to_playerid) echo " selected ";
-    echo ">";
-    echo $p['name'];
-    echo "</option>\n";
-  }
-  ?>
-</select>
-<input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
-<br/>
-<a href="#" onclick='$("#amount").val($(this).text()); return false;'>50</a> | <a href="#" onclick='$("#amount").val($(this).text()); return false;'>200</a>
-</div>
-</form>
+<fieldset class="bankpanel">
+	<legend>&nbsp;&#128181; <?=T('play_bank_title')?> &nbsp; &nbsp;<span style="float: right;"><a class="nostyle" href="#" onclick='$("#bankmanager").toggle(); return false;' >[...]</a>&nbsp;</span></legend>
+	<div id="bankmanager">
+		<?=T('play_bank_amount')?> : <span id="bankamount" class="currency"><?=formatAmount($game['bank_current']) ?></span><br/>
+		<form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
+		<?=T('play_bank_give')?> <input type="number" id="amount" name="amount" size=8 value="<?=$amount?>"/>
+		<?=T('play_bank_to')?>
+		<select name="to_playerid">
+		  <!-- <option value="0"><?=T('play_bank_title')?></option> -->
+		  <?php
+		  foreach($players as $p)
+		  {
+			echo "<option value=\"", $p['id'], "\"";
+			if ($p['id'] == $to_playerid) echo " selected ";
+			echo ">";
+			echo $p['name'];
+			echo "</option>\n";
+		  }
+		  ?>
+		</select>
+		<input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
+		<br/>
+		<a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amount").val($(this).text()); return false;'>200</a>
+
+		</form>
+	</div>
+</fieldset>
+<hr/>
 <?php
 } // am i the bankmanager
 ?>
 
-<h2><?=T('play_player')?></h2>
+<fieldset class="playeraction">
+	<legend>&nbsp;<?=T('play_player')?> <?=$my_name?>&nbsp;</legend>
 <form action="play.php?gameid=<?=$gameid?>&playerid=<?=$playerid?>" method="post">
-<div class="playeraction">
+  <?=sprintf(T('play_player_amount'), $my_name)?> <span class="currency" id="my_current"><?=formatAmount($my_account['current'])?></span><br/>
   <?=T('play_pay')?> <input type="number" id="amountplayer" name="amountplayer" value="<?=$amount?>" size=1/><span class="currency"></span> <?=T('play_pay_to')?> 
   <select name="to_playerid" id="playerlist">
-  <option value="0">&#128181;<?=T('play_bank_title')?></option>
+  <option value="0">&#128181; <?=T('play_bank_name')?></option>
   <?php
   foreach($players as $p)
   {
@@ -169,12 +147,18 @@ if($is_bankmanager === true)
 </select>
 <input class="button button--secondary button--small button--solid" name="start" type="submit" value="<?=T('play_bank_ok')?>"/>
 <br/>
-<a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>50</a> | <a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>100</a> | <a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>150</a> | <a href="#" onclick='$("#amountplayer").val($(this).text()); return false;'>200</a>
+<a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>50</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>100</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>150</a> | <a href="#" class="banknote" onclick='$("#amountplayer").val($(this).text()); return false;'>200</a>
 
 </form>
-</div>
+
 
 <input type="hidden" value="gameid=<?=$gameid?>&playerid=<?=$playerid?>" id="params"/>
+<input type="hidden" value="" id="last_action_date"/>
+
+<br/>
+
+<fieldset class="historypanel">
+	<legend>&nbsp;<?=T('play_histo')?>&nbsp;</legend>
 
 <script>
 var nextreload = 5000;
@@ -190,34 +174,36 @@ var nextreload = 5000;
       v_str = v.toLocaleString();
       if (v_str != $("#my_current").text())
       {
-		console.log("current amount of money changed");
+        console.log("current amount of money changed");
         $("#my_current").text(v_str).fadeOut(150).fadeIn(150);
         $("#history").html(data.history_html).fadeOut(150).fadeIn(150);
       }
       nbplayers = Object.keys(data.players).length;
-	  nbplayersinlist = $("#playerlist option").length ; // There is always a Bank, and the self player in the list (+1 -1)
-	  if (nbplayers != nbplayersinlist)
-	  {
-		// Refresh player table if change, and the drop down list
-		playerselected = $("#playerlist").prop('selectedIndex')
-		console.log("current number of players changed. selected = "+playerselected);
-		$("#players").html(data.players_html);
-		//if (nbplayersinlist < nbplayers)
-		{ // TODO find a solution to add/remove player and make it work even if the select is open
-			playerlist = $("#playerlist").empty();
-			playerlist.append('<option value="0">&#128181;<?=T('play_bank_title')?></option>');
-			Object.keys(data.players).forEach(function(item){
-				if (item != data.me.id)
-				{
-					selected = (playerselected == item ? 'selected' : '');
-					opt = '<option value="' + item + '" '+selected+'>'+data.players[item].name+"</option>";
-					playerlist.append(opt);
-				}
-			});
-		}
-		
-	  }
-      // 
+      nbplayersinlist = $("#playerlist option").length ; // There is always a Bank, and the self player in the list (+1 -1)
+      last_action_date = $("#last_action_date").val();
+      if (nbplayers != nbplayersinlist || last_action_date != data.last_action_date)
+      {
+        // Refresh player table if change, and the drop down list
+        playerselected = $("#playerlist").prop('selectedIndex')
+        console.log("Something have changed. selected = "+playerselected);
+        $("#players").html(data.players_html);
+        //if (nbplayersinlist < nbplayers)
+        { // TODO find a solution to add/remove player and make it work even if the select is open
+          playerlist = $("#playerlist").empty();
+          playerlist.append('<option value="0">&#128181;<?=T('play_bank_name')?></option>');
+          Object.keys(data.players).forEach(function(item){
+            if (item != data.me.id)
+            {
+              selected = (playerselected == item ? 'selected' : '');
+              opt = '<option value="' + item + '" '+selected+'>'+data.players[item].name+"</option>";
+              playerlist.append(opt);
+            }
+          });
+        }
+        $("#last_action_date").val(data.last_action_date);
+        $("#bankamount").html(data.bankamount);
+      }
+      //  Success
     },
     complete: function() {
       // Schedule the next request when the current one's complete
@@ -247,11 +233,11 @@ setInterval(function(){
  },1000);
  **/
 </script>
-<h2><?=T('play_histo')?></h2>
 
-<div id="history">
+
+<div id="history" style="overflow-y: scroll;height: 10em;">
 <table border="1" class="history">
-  <tr><td colspan=3><?=T('histo_account')?> : <span class="currency"><?=formatAmount($my_account['current'])?></span></td></tr>
+  
   <tr>
     <th><?=T('histo_col1')?></th>
     <th><?=T('histo_col2')?></th>
@@ -270,7 +256,7 @@ setInterval(function(){
     {
       $sign = '+';
       if ($from == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$from]['name'];
     }
@@ -278,14 +264,14 @@ setInterval(function(){
     {
       $sign = '-';
       if ($to == 0)
-        $name = "&#128181;".$_T['play_bank_title'];
+        $name = "&#128181;".$_T['play_bank_name'];
       else
         $name = $players[$to]['name'];
     }
     ?>
   <tr>
     <td><script>document.write(new Date("<?=$h['date_op']?>").toLocaleTimeString());</script></td>
-    <td align=right><span id="bankamount" class="currency"><?=$sign?><?=formatAmount($h['amount']) ?></span></td>
+    <td align=right><span class="currency"><?=$sign?><?=formatAmount($h['amount']) ?></span></td>
     <td><?=$name?></td>
   </tr>
     <?php
@@ -293,10 +279,53 @@ setInterval(function(){
 ?>
 </table>
 </div><!-- history -->
+
+</fieldset><!-- history -->
+</fieldset><!-- player -->
 <hr/>
-<a href="index.php"><?=T('go_to_welcome')?></a><br/>
+
+<fieldset>
+  <legend> &nbsp;<?=T('other_player')?>&nbsp;</legend>
+  <div id="players">
+  <table border="1">
+  <tr>
+  <?php
+  foreach($players as $p)
+  {
+    ?>
+    <td><?=$p['name']?></td>
+    <?php
+  }
+  ?>
+  </tr>
+  <tr>
+  <?php
+  foreach($players as $p)
+  {
+    ?>
+    <td align="right" class="currency"><?=formatAmount($p['current'])?></td>
+    <?php
+  }
+  ?>
+  </tr>
+  </table>
+  <br/>
+  </div>
+  <fieldset>
+    <legend>&nbsp;<?=T('other_join')?>&nbsp; &nbsp; <span style="float: right;"><a class="nostyle" href="#" onclick='$("#join").toggle(); return false;' >[...]</a>&nbsp;</span></legend>
+    <div id="join" style="display:none";>
+    
 <?php
 $join_url = $CONFIG['APP']['BASE_URL'].'join.php?gameid='.$gameid;
 ?>
-<a href="<?=$join_url?>" target="_new"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?=urlencode($join_url)?>"/></a>
+    <div class="panel">
+    <code>[ <a href="<?=$join_url?>" target="_new"><?= formatGameId($gameid) ?></a> ]</code><br/>
+    <a href="<?=$join_url?>" target="_new"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?=urlencode($join_url)?>"/></a>
+    </div>
+    </div>
+  </fieldset>
+</fieldset>
+
+<a href="index.php"><?=T('go_to_welcome')?></a><br/>
+<hr/>
 

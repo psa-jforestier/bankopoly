@@ -53,6 +53,7 @@ create table `game` (
   bank_current decimal(10,0),
   bank_init decimal(10,0),
   date_begin datetime,
+  date_end datetime,
   bank_player_id integer
   )
 ";
