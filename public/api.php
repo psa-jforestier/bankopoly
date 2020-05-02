@@ -8,13 +8,21 @@ $action = @$_REQUEST['action'];
 $gameid = @$_REQUEST['gameid'];
 $playerid = @$_REQUEST['playerid'];
 
+
+
 if ($action == 'purge')
 {
   $Game = new DAOGame();
-  $result = $Game->purgeOldGame($CONFIG['PURGE']);
+  $result = $Game->purgeOldGame($CONFIG['PURGE'], $CONFIG['PURGE_KEEP_OLD_GAME']);
   $result['time_s'] = (microtime(true) - $T);
+  if ($result['deletedgames'] != 0)
+  {
+    $LOGGER->info(sprintf('Old objects purged : %d game, %d player, %d operations', 
+    $result['deletedgames'], $result['deletedplayers'], $result['deletedoperations']));
+  }
   header('content-type: application/json');
   echo json_encode($result);
+  
   exit;
 }
 else if ($action == 'info')

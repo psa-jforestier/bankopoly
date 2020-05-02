@@ -20,7 +20,6 @@ class DAOGame extends DAO
     $r = sprintf("%05d", rand(0, 99999));
     // Last digit of the code is based on the seconds
     $s = date('s') % 10;
-    //return "88381101";
     return "$m$r$s";
   }
   public function createNewGame()
@@ -54,7 +53,7 @@ class DAOGame extends DAO
   
   public function getNumberOfGames()
   {
-    $stmt = $this->pdo->prepare("select count(*) as nb from game");
+    $stmt = $this->pdo->prepare("select count(*) as nb from game where date_end is null");
     $stmt->execute();
     $games = [];
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
@@ -67,7 +66,7 @@ class DAOGame extends DAO
   public function loadGameFromDB($game_id)
   {
     
-    $stmt = $this->pdo->prepare("select * from game where game_id=:game_id limit 1");
+    $stmt = $this->pdo->prepare("select * from game where game_id=:game_id and date_end is null limit 1");
     $stmt->execute([':game_id'=>$game_id]);
     $games = [];
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
@@ -186,63 +185,84 @@ class DAOGame extends DAO
     ]);
   }
   
-  public function purgeOldGame($seconds)
+  /**
+   ** Delete game created older than $second. If $keepDeleted, keep the game in 
+   ** the database. If not, realy delete the record in db
+   **/
+  public function purgeOldGame($seconds, $keepDeleted)
   {
     // Find all old game
     $now = time();
     $date = date(DATE_RFC3339, $now - $seconds);
-    /**
-    $stmt = $this->pdo->prepare("select game_id from game where date_begin < :date");
-    $r = $stmt->execute([
-      ':date'=>$date
-    ]);
-    $games = [];
-    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
-    {
-      $games[] = $row;
-    }
-    var_dump($games);
-    **/
-    $return = array();
-    // Remove old games
-    $stmt = $this->pdo->prepare("delete from game where date_begin < :date");
-    $r = $stmt->execute([
-      ':date'=>$date
-    ]);
-    $return['deletedgames'] = $stmt->rowCount();
-    // Remove orphan players
-    $stmt = $this->pdo->prepare("delete 
-from 
-  player 
-where 
-  id in (
-    select * from ( 
-        select
-            P.id
-            from player P
-            left join game G on G.game_id = P.game_id
-            where G.game_id is null
-        ) as t
-  )");
-    $r = $stmt->execute();
-    $return['deletedplayers'] = $stmt->rowCount();
-    // Remove orphan operation
-        $stmt = $this->pdo->prepare("delete 
-from 
-  operation 
-where 
-  id in (
-    select * from ( 
-        select
-            O.id
-            from operation O
-            left join game G on G.game_id = O.game_id
-            where G.game_id is null
-        ) as t
-  )
-");
-    $r = $stmt->execute();
-    $return['deletedoperations'] = $stmt->rowCount();
-    return $return;
+	$date_now = date(DATE_RFC3339, $now);
+	$return = array();
+	if ($keepDeleted == true)
+	{
+		// Do not delete game in DB
+		$stmt = $this->pdo->prepare("select game_id from game where date_begin < :date and date_end is null");
+		$r = $stmt->execute([
+		  ':date'=>$date
+		]);
+		$games = [];
+		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) 
+		{
+		  $games[] = $row;
+		}
+		var_dump($games);
+		$stmt = $this->pdo->prepare("update game set date_end = :date_now where date_begin < :date and date_end is null");
+		$r = $stmt->execute([
+		  ':date'=>$date,
+		  ':date_now'=>$date_now
+		]);
+		$return['deletedgames'] = $stmt->rowCount();
+	}
+	else
+	{
+			
+		
+		// Remove old games
+		$stmt = $this->pdo->prepare("delete from game where date_begin < :date");
+		$r = $stmt->execute([
+		  ':date'=>$date
+		]);
+		$return['deletedgames'] = $stmt->rowCount();
+	}
+	
+		// Remove orphan players
+		$stmt = $this->pdo->prepare("delete 
+	from 
+	  player 
+	where 
+	  id in (
+		select * from ( 
+			select
+				P.id
+				from player P
+				left join game G on G.game_id = P.game_id
+				where G.game_id is null or G.date_end is not null
+			) as t
+	  )");
+		$r = $stmt->execute();
+		$return['deletedplayers'] = $stmt->rowCount();
+		// Remove orphan operation
+			$stmt = $this->pdo->prepare("delete 
+	from 
+	  operation 
+	where 
+	  id in (
+		select * from ( 
+			select
+				O.id
+				from operation O
+				left join game G on G.game_id = O.game_id
+				where G.game_id is null or G.date_end is not null
+			) as t
+	  )
+	");
+		$r = $stmt->execute();
+		$return['deletedoperations'] = $stmt->rowCount();
+		
+	
+	return $return;
   }
 }

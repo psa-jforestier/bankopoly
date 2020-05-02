@@ -40,6 +40,7 @@ if (@$_REQUEST['action'] == 'post')
       $pid = $Player->createPlayer($playername, $gameid, 0);
       $Game->updateGame($gameid, $pid, $bankinit, $playerinit);
       $Game->giveBankMoneyToPlayer($gameid, $pid, $playerinit);
+      $LOGGER->info(sprintf("Creating player \"%s\" on game %d", $playername, $gameid));
 
       header("Location: ".$CONFIG['APP']['BASE_URL']."play.php?gameid=$gameid&playerid=$pid");
       exit;
@@ -66,6 +67,7 @@ if ($gameid == '')
   $gameid = $Game->createNewGame();
   $bankinit = $CONFIG['GAME']['BANK_INIT'];
   $playerinit = $CONFIG['GAME']['PLAYER_INIT'];
+  $LOGGER->info(sprintf('Creating new game id : %s', $gameid));
   if ($gameid == -1)
   {
     $gameid = '?';

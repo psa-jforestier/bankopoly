@@ -73,6 +73,7 @@ The `GAME` table contains information of a running game :
 - bank_start : the initial amount of money in the bank
 - bank_current : the current amount of money in the bank
 - date_begin : the datetime when the game start
+- date_end : the datetime when the game stop (the record should be deleted later or keeped for history)
 - bank_player_id : the id of the player who plays the bank role
 
 The `PLAYER` table contains information of player :
@@ -98,5 +99,6 @@ The `OPERATION` table contains history of bank operation :
 - `.\src\` : PHP code, lib, SQL model
 - `.\var\` : log, cache or SQLite data file
 
-
+# Troubleshooting
+- `Fatal error: Uncaught PDOException: could not find driver in (...)` : Check if you have enable PHP extension pdo_sqlite and/or pdo_mysql is php.ini
 
